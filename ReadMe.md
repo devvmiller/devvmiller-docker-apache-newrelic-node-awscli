@@ -9,6 +9,7 @@
 
 This adds nodejs and a few command lines to [PHP image devvmiller/docker-apache-newrelic](https://github.com/devvmiller/docker-apache-newrelic). This is an image used in a CI.
 
+* docker
 * nodejs
 * yarn
 * npm
@@ -19,7 +20,7 @@ This adds nodejs and a few command lines to [PHP image devvmiller/docker-apache-
 
 ## How this image was generated
 
-See [`generate-image.sh`](generate-image.sh), then diff the two images to show custom changes
+See [`generate-image.sh`](generate-image.sh), then diff the two images to show custom changes. Docker command line was taken from `circleci-images/shared/images/Dockerfile-basic.template`
 
 ```bash
 diff CircleCi.Dockerfile Dockerfile
@@ -36,7 +37,7 @@ diff CircleCi.Dockerfile Dockerfile
 < ###
 ---
 > FROM devvmiller/docker-apache-newrelic:latest
-9c3,16
+9c3,60
 < FROM circleci/php:7.2.9-cli-stretch
 ---
 > ## Install awscli, gpg and git command line
@@ -49,11 +50,55 @@ diff CircleCi.Dockerfile Dockerfile
 >         less \
 >         gnupg2 \
 >         ssh \
+>         curl \
 >     && pip3 --no-cache-dir install --upgrade awscli \
 >     && apt-get clean
 > 
+> # install jq
+> RUN JQ_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/jq-latest" \
+>   && curl --silent --show-error --location --fail --retry 3 --output /usr/bin/jq $JQ_URL \
+>   && chmod +x /usr/bin/jq \
+>   && jq --version
+> 
+> # Install Docker
+> 
+> # Docker.com returns the URL of the latest binary when you hit a directory listing
+> # We curl this URL and `grep` the version out.
+> # The output looks like this:
+> 
+> #>    # To install, run the following commands as root:
+> #>    curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-17.05.0-ce.tgz && tar --strip-components=1 -xvzf docker-17.05.0-ce.tgz -C /usr/local/bin
+> #>
+> #>    # Then start docker in daemon mode:
+> #>    /usr/local/bin/dockerd
+> 
+> RUN set -ex \
+>   && export DOCKER_VERSION=$(curl --silent --fail --retry 3 https://download.docker.com/linux/static/stable/x86_64/ | grep -o -e 'docker-[.0-9]*-ce\.tgz' | sort -r | head -n 1) \
+>   && DOCKER_URL="https://download.docker.com/linux/static/stable/x86_64/${DOCKER_VERSION}" \
+>   && echo Docker URL: $DOCKER_URL \
+>   && curl --silent --show-error --location --fail --retry 3 --output /tmp/docker.tgz "${DOCKER_URL}" \
+>   && ls -lha /tmp/docker.tgz \
+>   && tar -xz -C /tmp -f /tmp/docker.tgz \
+>   && mv /tmp/docker/* /usr/bin \
+>   && rm -rf /tmp/docker /tmp/docker.tgz \
+>   && which docker \
+>   && (docker version || true)
+> 
+> # docker compose
+> RUN COMPOSE_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/docker-compose-latest" \
+>   && curl --silent --show-error --location --fail --retry 3 --output /usr/bin/docker-compose $COMPOSE_URL \
+>   && chmod +x /usr/bin/docker-compose \
+>   && docker-compose version
+> 
+> # install dockerize
+> RUN DOCKERIZE_URL="https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/dockerize-latest.tar.gz" \
+>   && curl --silent --show-error --location --fail --retry 3 --output /tmp/dockerize-linux-amd64.tar.gz $DOCKERIZE_URL \
+>   && tar -C /usr/local/bin -xzvf /tmp/dockerize-linux-amd64.tar.gz \
+>   && rm -rf /tmp/dockerize-linux-amd64.tar.gz \
+>   && dockerize --version
+> 
 > COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-78,79c85,91
+78,79c129,137
 < 
 < USER circleci
 ---
@@ -64,4 +109,6 @@ diff CircleCi.Dockerfile Dockerfile
 > RUN python3 --version
 > RUN aws --version
 > RUN openssl version
+> RUN jq --version
+> RUN curl --version
 ```
