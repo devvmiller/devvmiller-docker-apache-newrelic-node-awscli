@@ -7,7 +7,15 @@
 [![Version](https://images.microbadger.com/badges/version/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://microbadger.com/images/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
 [![Layers](https://images.microbadger.com/badges/image/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://microbadger.com/images/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
 
-This adds awscli and nodejs to [PHP image devvmiller/docker-apache-newrelic](https://github.com/devvmiller/docker-apache-newrelic). This is an image used in a CI.
+This adds nodejs and a few command lines to [PHP image devvmiller/docker-apache-newrelic](https://github.com/devvmiller/docker-apache-newrelic). This is an image used in a CI.
+
+* nodejs
+* yarn
+* npm
+* composer
+* python3
+* aws
+* ssh
 
 ## How this image was generated
 
@@ -55,5 +63,5 @@ diff CircleCi.Dockerfile Dockerfile
 > RUN composer --version
 > RUN python3 --version
 > RUN aws --version
-> RUN ssh --version
+> RUN openssl version
 ```

@@ -88,4 +88,4 @@ RUN php --version
 RUN composer --version
 RUN python3 --version
 RUN aws --version
-RUN ssh --version
+RUN openssl version
