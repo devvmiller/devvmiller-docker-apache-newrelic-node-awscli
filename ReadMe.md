@@ -31,7 +31,7 @@ diff CircleCi.Dockerfile Dockerfile
 9c3,14
 < FROM circleci/php:7.2.9-cli-stretch
 ---
-> ## Install awscli and gpg command line
+> ## Install awscli, gpg and git command line
 > RUN apt-get update && \
 >     apt-get install -y \
 >         python3 \
@@ -40,7 +40,7 @@ diff CircleCi.Dockerfile Dockerfile
 >         groff \
 >         less \
 >         gnupg2 \
->         git \
+>         ssh \
 >     && pip3 --no-cache-dir install --upgrade awscli \
 >     && apt-get clean
 78,79c83,85
