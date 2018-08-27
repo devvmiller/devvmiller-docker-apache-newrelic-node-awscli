@@ -1,0 +1,17 @@
+sudo: required
+language: ruby
+env:
+  - IMAGE_NAME=$DOCKER_USERNAME/devvmiller-docker-apache-newrelic-node-awscli
+services:
+- docker
+script:
+- docker build . -t $IMAGE_NAME:$TRAVIS_COMMIT
+
+deploy:
+  provider: script
+  script: |
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    docker tag $IMAGE_NAME:$TRAVIS_COMMIT $IMAGE_NAME:latest
+    docker push $IMAGE_NAME:latest
+  on:
+    branch: master
