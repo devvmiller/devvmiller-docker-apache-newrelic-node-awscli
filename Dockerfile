@@ -13,6 +13,8 @@ RUN apt-get update && \
     && pip3 --no-cache-dir install --upgrade awscli \
     && apt-get clean
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 # node installations command expect to run as root
 USER root
 ## Using node installation from https://raw.githubusercontent.com/nodejs/docker-node/72dd945d29dee5afa73956ebc971bf3a472442f7/8/jessie/Dockerfile
@@ -80,6 +82,10 @@ RUN set -ex \
 
 # Basic smoke test
 RUN node --version
+RUN yarn --version
+RUN npm --version
 RUN php --version
+RUN composer --version
 RUN python3 --version
 RUN aws --version
+RUN ssh --version

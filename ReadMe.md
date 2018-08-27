@@ -28,7 +28,7 @@ diff CircleCi.Dockerfile Dockerfile
 < ###
 ---
 > FROM devvmiller/docker-apache-newrelic:latest
-9c3,14
+9c3,16
 < FROM circleci/php:7.2.9-cli-stretch
 ---
 > ## Install awscli, gpg and git command line
@@ -43,11 +43,17 @@ diff CircleCi.Dockerfile Dockerfile
 >         ssh \
 >     && pip3 --no-cache-dir install --upgrade awscli \
 >     && apt-get clean
-78,79c83,85
+> 
+> COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+78,79c85,91
 < 
 < USER circleci
 ---
+> RUN yarn --version
+> RUN npm --version
 > RUN php --version
+> RUN composer --version
 > RUN python3 --version
 > RUN aws --version
+> RUN ssh --version
 ```
