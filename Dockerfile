@@ -9,7 +9,7 @@ RUN apt-get update && \
         groff \
         less \
         gnupg2 \
-        git \
+        openssh \
     && pip3 --no-cache-dir install --upgrade awscli \
     && apt-get clean
 
