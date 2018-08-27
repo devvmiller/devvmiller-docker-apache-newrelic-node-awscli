@@ -1,5 +1,9 @@
 FROM devvmiller/docker-apache-newrelic:latest
 
+ENV XDEBUG_VERSION 2.6.0
+
+RUN pecl install xdebug-$XDEBUG_VERSION && docker-php-ext-enable xdebug
+
 ## Install awscli, gpg and git command line
 RUN apt-get update && \
     apt-get install -y \

@@ -37,9 +37,13 @@ diff CircleCi.Dockerfile Dockerfile
 < ###
 ---
 > FROM devvmiller/docker-apache-newrelic:latest
-9c3,60
+9c3,64
 < FROM circleci/php:7.2.9-cli-stretch
 ---
+> ENV XDEBUG_VERSION 2.6.0
+> 
+> RUN pecl install xdebug-$XDEBUG_VERSION && docker-php-ext-enable xdebug
+> 
 > ## Install awscli, gpg and git command line
 > RUN apt-get update && \
 >     apt-get install -y \
@@ -98,7 +102,7 @@ diff CircleCi.Dockerfile Dockerfile
 >   && dockerize --version
 > 
 > COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-78,79c129,137
+78,79c133,141
 < 
 < USER circleci
 ---
