@@ -1,5 +1,13 @@
 # devvmiller-docker-apache-newrelic-node-awscli
 
+[![Build Status](https://travis-ci.com/GabLeRoux/devvmiller-docker-apache-newrelic-node-awscli.svg?branch=master)](https://travis-ci.com/GabLeRoux/devvmiller-docker-apache-newrelic-node-awscli)
+[![Docker Stars](https://img.shields.io/docker/stars/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://hub.docker.com/r/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
+[![Docker Pulls](https://img.shields.io/docker/pulls/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://hub.docker.com/r/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
+[![Docker Build](https://img.shields.io/docker/build/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://hub.docker.com/r/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
+[![Image](https://images.microbadger.com/badges/image/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://microbadger.com/images/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
+[![Version](https://images.microbadger.com/badges/version/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://microbadger.com/images/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
+[![Layers](https://images.microbadger.com/badges/image/gableroux/devvmiller-docker-apache-newrelic-node-awscli.svg)](https://microbadger.com/images/gableroux/devvmiller-docker-apache-newrelic-node-awscli)
+
 This adds awscli and nodejs to [PHP image devvmiller/docker-apache-newrelic](https://github.com/devvmiller/docker-apache-newrelic). This is an image used in a CI.
 
 ## How this image was generated
@@ -21,7 +29,7 @@ diff CircleCi.Dockerfile Dockerfile
 < ###
 ---
 > FROM devvmiller/docker-apache-newrelic:latest
-9c3,14
+9c3,13
 < FROM circleci/php:7.2.9-cli-stretch
 ---
 > ## Install awscli and gpg command line
@@ -33,10 +41,13 @@ diff CircleCi.Dockerfile Dockerfile
 >         groff \
 >         less \
 >         gnupg2 \
->     && pip3 install --upgrade pip \
 >     && pip3 --no-cache-dir install --upgrade awscli \
 >     && apt-get clean
-78,79d82
+78,79c82,84
 < 
 < USER circleci
+---
+> RUN php --version
+> RUN python3 --version
+> RUN aws --version
 ```

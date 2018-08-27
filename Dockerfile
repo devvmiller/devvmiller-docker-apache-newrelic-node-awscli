@@ -9,7 +9,6 @@ RUN apt-get update && \
         groff \
         less \
         gnupg2 \
-    && pip3 install --upgrade pip \
     && pip3 --no-cache-dir install --upgrade awscli \
     && apt-get clean
 
@@ -80,3 +79,6 @@ RUN set -ex \
 
 # Basic smoke test
 RUN node --version
+RUN php --version
+RUN python3 --version
+RUN aws --version
