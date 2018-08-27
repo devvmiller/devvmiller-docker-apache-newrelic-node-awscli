@@ -9,7 +9,7 @@ script:
 - docker build . -t $IMAGE_NAME:$TRAVIS_COMMIT
 - docker push $IMAGE_NAME:$TRAVIS_COMMIT
 - |
-  if [ $TRAVIS_BRANCH = "maser" ]; then
+  if [ "$TRAVIS_BRANCH" == "master" ]; then
     docker tag $IMAGE_NAME:$TRAVIS_COMMIT $IMAGE_NAME:latest
     docker push $IMAGE_NAME:latest
   fi
