@@ -1,6 +1,6 @@
 FROM devvmiller/docker-apache-newrelic:latest
 
-## Install awscli and gpg command line
+## Install awscli, gpg and git command line
 RUN apt-get update && \
     apt-get install -y \
         python3 \
@@ -9,6 +9,7 @@ RUN apt-get update && \
         groff \
         less \
         gnupg2 \
+        git \
     && pip3 --no-cache-dir install --upgrade awscli \
     && apt-get clean
 
