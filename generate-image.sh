@@ -9,7 +9,7 @@ function get_php_node_image_from_circleci() {
     cd php
     ./generate-images
     cd ../../
-    cat circleci-images/php/images/7.2.9-cli-stretch/node/Dockerfile > $1
+    cat circleci-images/php/images/7.3.4-cli-stretch/node/Dockerfile > $1
 }
 
 get_php_node_image_from_circleci CircleCi.Dockerfile
